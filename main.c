@@ -74,7 +74,7 @@ int main()
     {
       char *word = create_string(100);
       printf("Digite a palavra que deseja buscar: ");
-      scanf("%s", word);
+      scanf(" %[^\n]", word);
       scanf("%*c"); // limpar buffer
 
       lowerToUpper(word);
