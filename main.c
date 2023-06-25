@@ -60,7 +60,7 @@ int main()
 
     printf("\nSair - 1\n");
     printf("Buscar - 2\n");
-    printf("Escolha a opcao para buscar a palavra: ");
+    printf("Escolha uma opção: ");
     scanf("%d", &flag);
 
     if (flag == 1)
