@@ -48,7 +48,7 @@ int main()
   scanf("%s", file_name);
   scanf("%*c"); // limpar buffer
 
-  create_path(path, file_name); // Cria o caminho para o arquivo (path
+  create_path(path, file_name); // Cria o caminho para o arquivo (path)
 
   FILE *file = open_file(path);
 
@@ -75,7 +75,7 @@ int main()
       scanf(" %[^\n]", word); // Lê a palavra com espaços
       scanf("%*c");           // limpar buffer
 
-      lowerToUpper(word); // As letras do arquivo são maiúsculas, então é necessário converter a palavra para maiúscula
+      lowerToUpper(word); // As letras do arquivo são maiúsculas, então é necessário converter o input para maiúsculo
 
       printf("\nBuscando a palavra: %s\n", word);
 
