@@ -670,5 +670,5 @@ ROI *create_roi()
 void show_roi(ROI *roi)
 {
   printf("x inicial: %d, y inicial: %d\n", roi->A.x, roi->A.y);
-  printf("x inicial: %d, y final: %d\n", roi->B.x, roi->B.y);
+  printf("x final: %d, y final: %d\n", roi->B.x, roi->B.y);
 }
