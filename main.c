@@ -219,6 +219,7 @@ ROI *diagonal_SW(char *word, char **matrix, int *rows, int *cols)
 
       if (word[0] == matrix[i][j])
       {
+        printf("Match na posicao [%d][%d]\n\n", i, j);
         int count_equals = 0;
         int k = 0;
 
@@ -226,8 +227,10 @@ ROI *diagonal_SW(char *word, char **matrix, int *rows, int *cols)
         {
           // i + k para evitar que a palavra seja buscada fora da matriz
           // j - k também para evitar que a palavra seja buscada fora da matriz
+          // printf("Match na posicao [%d][%d]\n\n", i, j);
           if (i + k < *rows && j - k >= 0 && word[k] == matrix[i + k][j - k])
           {
+            // printf("Match na posicao [%d][%d]\n\n", i, j);
             if (++count_equals == length_word)
               break;
           }
