@@ -77,7 +77,7 @@ int main()
       scanf(" %[^\n]", word);
       scanf("%*c"); // limpar buffer
 
-      lowerToUpper(word);
+      lowerToUpper(word); // As letras do arquivo são maiúsculas, então é necessário converter a palavra para maiúscula
 
       printf("\nBuscando a palavra: %s\n", word);
 
@@ -121,6 +121,7 @@ void lowerToUpper(char *word)
   }
 }
 
+// Função que unifica as funções de busca
 ROI *search_word(char *word, char **matrix, int *rows, int *cols)
 {
   ROI *roi = create_roi();
@@ -176,6 +177,7 @@ ROI *search_word(char *word, char **matrix, int *rows, int *cols)
   return roi;
 }
 
+// Verifica se a ROI tem algum valor
 int has_value(ROI *roi)
 {
   if (roi->A.x != -1 && roi->A.y != -1 && roi->B.x != -1 && roi->B.y != -1)
@@ -185,14 +187,13 @@ int has_value(ROI *roi)
   return false;
 }
 
-// Sudoeste
+// Busca na diagonal Sudoeste
 
 // [1]  2  3
 // 4  [5]  6
 // 7  8  [9]
 
 // 1 -> 5 -> 9
-
 ROI *diagonal_SW(char *word, char **matrix, int *rows, int *cols)
 {
   int length_word = strlen(word);
@@ -210,6 +211,8 @@ ROI *diagonal_SW(char *word, char **matrix, int *rows, int *cols)
 
         for (k = 0; k < length_word; k++)
         {
+          // i + k para evitar que a palavra seja buscada fora da matriz
+          // j - k também para evitar que a palavra seja buscada fora da matriz
           if (i + k < *rows && j - k >= 0 && word[k] == matrix[i + k][j - k])
           {
             if (++count_equals == length_word)
@@ -232,7 +235,7 @@ ROI *diagonal_SW(char *word, char **matrix, int *rows, int *cols)
   return roi;
 }
 
-//  (↗️) Nordeste
+//  Busca na diagonal (↗️) Nordeste
 
 // 1  2  [3]
 // 4  [5]  6
@@ -278,8 +281,7 @@ ROI *diagonal_NE(char *word, char **matrix, int *rows, int *cols)
   return roi;
 }
 
-//  (↖️) - NW (Noroeste)
-
+//  Busca na Diagonal (↖️) - NW (Noroeste)
 // 1  2  [3]
 // 4  [5]  6
 // [7]  8  9
@@ -325,7 +327,7 @@ ROI *diagonal_NW(char *word, char **matrix, int *rows, int *cols)
   return roi;
 }
 
-// Sudeste
+// Busca na Diagonal Sudeste
 // [1]  2  3
 // 4  [5]  6
 // 7  8  [9]
@@ -411,6 +413,7 @@ ROI *vertical_backward(char *word, char **matrix, int *rows, int *cols)
   return roi;
 }
 
+// Busca Vertical (⬆️) - UP
 ROI *vertical_forward(char *word, char **matrix, int *rows, int *cols)
 {
 
@@ -451,6 +454,7 @@ ROI *vertical_forward(char *word, char **matrix, int *rows, int *cols)
   return roi;
 }
 
+// Busca Horizontal Reversa (⬅️) - LEFT
 ROI *horizontal_backward(char *word, char **matrix, int *rows, int *cols)
 {
   ROI *roi = create_roi();
@@ -491,6 +495,7 @@ ROI *horizontal_backward(char *word, char **matrix, int *rows, int *cols)
   return roi;
 }
 
+// Busca Horizontal (➡️) - RIGHT
 ROI *horizontal_forward(char *word, char **matrix, int *rows, int *cols)
 {
 
@@ -571,12 +576,16 @@ char **malloc_matrix(int *rows, int *cols)
   return matrix;
 }
 
+// Função para preencher a matriz
 char **fill_matrix(FILE *file, int *rows, int *cols)
 {
+
+  // Detecta qual o tamanho da matriz que esta na primeira linha do arquivo
   fscanf(file, "%d %d", rows, cols);
 
   char **matrix = malloc_matrix(rows, cols);
 
+  // Preenche a matriz com os caracteres do arquivo
   for (int i = 0; i < *rows; i++)
   {
     for (int j = 0; j < *cols * 2; j++)
@@ -592,6 +601,7 @@ char **fill_matrix(FILE *file, int *rows, int *cols)
   return matrix;
 }
 
+// Função para mostrar a matriz
 void show_matrix(char **matrix, int *rows, int *cols)
 {
   printf("\n");
@@ -607,6 +617,7 @@ void show_matrix(char **matrix, int *rows, int *cols)
   }
 }
 
+// Função para alocar memória para uma string
 char *create_string(int size)
 {
   char *word = (char *)malloc(size * sizeof(char));
@@ -620,6 +631,7 @@ char *create_string(int size)
   return word;
 }
 
+// Função para alocar memória e inicializar os valores da ROI
 ROI *create_roi()
 {
   ROI *roi = malloc(sizeof(ROI));
@@ -638,8 +650,9 @@ ROI *create_roi()
   return roi;
 }
 
+// Função para imprimir os vaores das coordenadas da ROI
 void show_roi(ROI *roi)
 {
-  printf("x: %d, y: %d\n", roi->A.x, roi->A.y);
-  printf("x: %d, y: %d\n", roi->B.x, roi->B.y);
+  printf("x inicial: %d, y inicial: %d\n", roi->A.x, roi->A.y);
+  printf("x inicial: %d, y final: %d\n", roi->B.x, roi->B.y);
 }
