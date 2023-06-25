@@ -669,6 +669,6 @@ ROI *create_roi()
 // Função para imprimir os vaores das coordenadas da ROI
 void show_roi(ROI *roi)
 {
-  printf("x inicial: %d, y inicial: %d\n", roi->A.x, roi->A.y);
-  printf("x final: %d, y final: %d\n", roi->B.x, roi->B.y);
+  printf("linha inicial: %d, coluna inicial: %d\n", roi->A.x, roi->A.y);
+  printf("linha final: %d, coluna final: %d\n", roi->B.x, roi->B.y);
 }
