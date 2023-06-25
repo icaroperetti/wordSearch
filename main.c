@@ -37,8 +37,6 @@ void lowerToUpper(char *word);
 void destroy_matrix(char **matrix, int *rows);
 void create_path(char *path, char *file_name);
 
-
-
 int main()
 {
   int flag = 0;
@@ -48,7 +46,6 @@ int main()
   char *file_name = create_string(50);
   printf("Digite o nome do arquivo (deve estar na pasta files): ");
   scanf("%s", file_name);
-
   scanf("%*c"); // limpar buffer
 
   create_path(path, file_name); // Cria o caminho para o arquivo (path
@@ -75,8 +72,8 @@ int main()
     {
       char *word = create_string(100);
       printf("Digite a palavra que deseja buscar: ");
-      scanf(" %[^\n]", word);
-      scanf("%*c"); // limpar buffer
+      scanf(" %[^\n]", word); // Lê a palavra com espaços
+      scanf("%*c");           // limpar buffer
 
       lowerToUpper(word); // As letras do arquivo são maiúsculas, então é necessário converter a palavra para maiúscula
 
@@ -205,11 +202,11 @@ int has_value(ROI *roi)
 
 // Busca na diagonal Sudoeste
 
-// [1]  2  3
+// 1  2  [3]
 // 4  [5]  6
-// 7  8  [9]
+// [7]  8  9
 
-// 1 -> 5 -> 9
+// 3 -> 5 -> 7
 ROI *diagonal_SW(char *word, char **matrix, int *rows, int *cols)
 {
   int length_word = strlen(word);
@@ -297,12 +294,12 @@ ROI *diagonal_NE(char *word, char **matrix, int *rows, int *cols)
   return roi;
 }
 
-//  Busca na Diagonal (↖️) - NW (Noroeste)
-// 1  2  [3]
+//  Busca na Diagonal  NW (Noroeste, diagonalmente para cima e para a esquerda)
+// [1]  2  3
 // 4  [5]  6
-// [7]  8  9
+// 7  8  [9]
 
-// 3 -> 5 -> 7
+// 9 -> 5 -> 1
 
 ROI *diagonal_NW(char *word, char **matrix, int *rows, int *cols)
 {
@@ -343,12 +340,12 @@ ROI *diagonal_NW(char *word, char **matrix, int *rows, int *cols)
   return roi;
 }
 
-// Busca na Diagonal Sudeste
+// Busca na Diagonal Sudeste (diagonalmente para baixo e para a direita)
 // [1]  2  3
 // 4  [5]  6
 // 7  8  [9]
 
-// 9 -> 5 -> 1
+// 1 -> 5 -> 9
 
 ROI *diagonal_SE(char *word, char **matrix, int *rows, int *cols)
 {
