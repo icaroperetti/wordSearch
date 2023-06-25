@@ -34,6 +34,10 @@ void show_matrix(char **matrix, int *rows, int *cols);
 void show_roi(ROI *roi);
 int has_value(ROI *roi);
 void lowerToUpper(char *word);
+void destroy_matrix(char **matrix, int *rows);
+void create_path(char *path, char *file_name);
+
+
 
 int main()
 {
@@ -44,13 +48,10 @@ int main()
   char *file_name = create_string(50);
   printf("Digite o nome do arquivo (deve estar na pasta files): ");
   scanf("%s", file_name);
+
   scanf("%*c"); // limpar buffer
 
-  strcpy(path, FILE_PATH);
-
-  strcat(path, file_name);
-
-  printf("Abrindo arquivo: %s\n", path);
+  create_path(path, file_name); // Cria o caminho para o arquivo (path
 
   FILE *file = open_file(path);
 
@@ -83,6 +84,7 @@ int main()
 
       ROI *roi = search_word(word, matrix, &rows, &cols);
 
+      // Verifica se a ROI tem algum valor e exibe caso positivo
       if (has_value(roi))
       {
         printf("Palavra encontrada.\n");
@@ -92,8 +94,9 @@ int main()
       {
         printf("Palavra nao encontrada.\n");
       }
-      free(word);
+      // Liberação de memória
       free(roi);
+      free(word);
     }
     else
     {
@@ -101,14 +104,27 @@ int main()
     }
   }
 
-  for (int i = 0; i < rows; i++)
+  // Liberação de memória
+  destroy_matrix(matrix, &rows);
+  free(file_name);
+
+  return 0;
+}
+
+void create_path(char *path, char *file_name)
+{
+  strcpy(path, FILE_PATH); // Copia o caminho para a variavel path
+  strcat(path, file_name); // Concatena o nome do arquivo com o caminho
+}
+
+void destroy_matrix(char **matrix, int *rows)
+{
+  for (int i = 0; i < *rows; i++)
   {
     free(matrix[i]);
   }
 
   free(matrix);
-
-  return 0;
 }
 
 void lowerToUpper(char *word)
