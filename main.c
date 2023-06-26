@@ -33,7 +33,7 @@ ROI *search_word(char *word, char **matrix, int *rows, int *cols);
 void show_matrix(char **matrix, int *rows, int *cols);
 void show_roi(ROI *roi);
 int has_value(ROI *roi);
-void lowerToUpper(char *word);
+void lower_to_upper(char *word);
 void destroy_matrix(char **matrix, int *rows);
 void create_path(char *path, char *file_name);
 
@@ -75,7 +75,7 @@ int main()
       scanf(" %[^\n]", word); // Lê a palavra com espaços
       scanf("%*c");           // limpar buffer
 
-      lowerToUpper(word); // As letras do arquivo são maiúsculas, então é necessário converter o input para maiúsculo
+      lower_to_upper(word); // As letras do arquivo são maiúsculas, então é necessário converter o input para maiúsculo
 
       printf("\nBuscando a palavra: %s\n", word);
 
@@ -89,7 +89,7 @@ int main()
       }
       else
       {
-        printf("Palavra nao encontrada.\n");
+        printf("Palavra nao encontrada\n");
       }
       // Liberação de memória
       free(roi);
@@ -124,7 +124,7 @@ void destroy_matrix(char **matrix, int *rows)
   free(matrix);
 }
 
-void lowerToUpper(char *word)
+void lower_to_upper(char *word)
 {
   int i = 0;
   while (word[i] != '\0')
