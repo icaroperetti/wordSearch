@@ -6,11 +6,13 @@
 #define true 1
 #define false 0
 
+// estrutura de coordenadas
 typedef struct
 {
   int x, y;
 } CORD;
 
+// estrutura de ROI que armazena as coordenadas de inicio e fim da palavra
 typedef struct
 {
   CORD A, B;
@@ -489,6 +491,7 @@ ROI *horizontal_backward(char *word, char **matrix, int *rows, int *cols)
 
         for (k = 0; k < length_word; k++)
         {
+          // printf("matrix[%d][%d] = %c\n", i, j - k, matrix[i][j - k]);
           if (j - k >= 0 && word[k] == matrix[i][j - k])
           {
             if (++count_equals == length_word)
