@@ -60,7 +60,7 @@ int main()
 
     printf("\nSair - 1\n");
     printf("Buscar - 2\n");
-    printf("Escolha uma opção: ");
+    printf("Escolha uma opcao: ");
     scanf("%d", &flag);
 
     if (flag == 1)
@@ -219,7 +219,7 @@ ROI *diagonal_SW(char *word, char **matrix, int *rows, int *cols)
 
       if (word[0] == matrix[i][j])
       {
-        printf("Match na posicao [%d][%d]\n\n", i, j);
+        // printf("Match na posicao [%d][%d]\n\n", i, j);
         int count_equals = 0;
         int k = 0;
 
@@ -251,7 +251,7 @@ ROI *diagonal_SW(char *word, char **matrix, int *rows, int *cols)
   return roi;
 }
 
-//  Busca na diagonal (↗️) Nordeste
+// Busca na diagonal (↗️) Nordeste
 
 // 1  2  [3]
 // 4  [5]  6
