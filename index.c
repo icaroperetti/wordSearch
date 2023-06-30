@@ -18,6 +18,7 @@ typedef struct
     CORD A, B;
 } ROI;
 
+// Prototipação das funções
 FILE *open_file(char *path);
 char **malloc_matrix(int *rows, int *cols);
 char **fill_matrix(FILE *file, int *rows, int *cols);
@@ -41,11 +42,12 @@ void create_path(char *path, char *file_name);
 
 int main()
 {
-    int flag = 0;
+    int op = 0;
     int rows, cols;
     char path[100];
 
     char *file_name = create_string(50);
+
     printf("Digite o nome do arquivo (deve estar na pasta files): ");
     scanf("%s", file_name);
     scanf("%*c"); // limpar buffer
@@ -57,20 +59,20 @@ int main()
     char **matrix = fill_matrix(file, &rows, &cols);
     show_matrix(matrix, &rows, &cols);
 
-    while (flag != 1)
+    while (op != 1)
     {
 
         printf("\nSair - 1\n");
         printf("Buscar - 2\n");
         printf("Escolha uma opcao: ");
-        scanf("%d", &flag);
+        scanf("%d", &op);
 
-        if (flag == 1)
+        if (op == 1)
         {
             printf("Saindo...\n");
             exit(0);
         }
-        else if (flag == 2)
+        else if (op == 2)
         {
             char *word = create_string(100);
             printf("Digite a palavra que deseja buscar: ");
@@ -209,20 +211,22 @@ int has_value(ROI *roi)
 // 3 -> 5 -> 7
 ROI *secondary_diagonal_forward(char *word, char **matrix, int *rows, int *cols)
 {
-    int length_word = strlen(word);
-    ROI *roi = create_roi();
+    int length_word = strlen(word); // Pega o tamanho da palavra
+    ROI *roi = create_roi();        // Cria a ROI (aloca memória e inicializa com -1)
 
+    // Percorre a matriz
     for (int i = 0; i < *rows; i++)
     {
         for (int j = 0; j < *cols; j++)
         {
-
+            // Verifica se a primeira letra da palavra é igual a letra da matriz
             if (word[0] == matrix[i][j])
             {
                 // printf("Match na posicao [%d][%d]\n\n", i, j);
                 int count_equals = 0;
                 int k = 0;
 
+                // Percorre a palavra
                 for (k = 0; k < length_word; k++)
                 {
                     // i + k para evitar que a palavra seja buscada fora da matriz
@@ -235,7 +239,7 @@ ROI *secondary_diagonal_forward(char *word, char **matrix, int *rows, int *cols)
                             break;
                     }
                 }
-
+                // Se o contador de letras iguais for igual ao tamanho da palavra, então a palavra foi encontrada
                 if (count_equals == length_word)
                 {
                     roi->A.x = i;
@@ -556,7 +560,7 @@ FILE *open_file(char *path)
 
     if (!file)
     {
-        perror("Erro ao abrir o arquivo.\n");
+        printf("Erro ao abrir o arquivo.\n");
         exit(1);
     }
 
@@ -637,7 +641,7 @@ char *create_string(int size)
 
     if (word == NULL)
     {
-        perror("Erro ao alocar memória.\n");
+        printf("Erro ao alocar memória.\n");
         exit(1);
     }
 
@@ -651,7 +655,7 @@ ROI *create_roi()
 
     if (roi == NULL)
     {
-        perror("Erro ao alocar memória.\n");
+        printf("Erro ao alocar memória.\n");
         exit(1);
     }
 
