@@ -4,7 +4,7 @@
 - O compilador gcc deve estar instalado na máquina.
 - Para compilar abra o terminal na raiz da pasta e execute:
 
-    - ```gcc -o idx.exe``` (Windows)
+    - ```gcc index.c -o idx.exe``` (Windows)
 
     - ```.\idx.exe``` (Windows)
 
