@@ -81,8 +81,6 @@ int main()
 
             lower_to_upper(word); // As letras do arquivo são maiúsculas, então é necessário converter o input para maiúsculo
 
-            printf("\nBuscando a palavra: %s\n", word);
-
             ROI *roi = search_word(word, matrix, &rows, &cols);
 
             // Verifica se a ROI tem algum valor e exibe caso positivo
@@ -106,8 +104,8 @@ int main()
     }
 
     // Liberação de memória
-    destroy_matrix(matrix, &rows);
     free(file_name);
+    destroy_matrix(matrix, &rows);
 
     return 0;
 }
@@ -142,6 +140,8 @@ void lower_to_upper(char *word)
 ROI *search_word(char *word, char **matrix, int *rows, int *cols)
 {
     ROI *roi = create_roi();
+
+    printf("\nBuscando a palavra: %s\n", word);
 
     roi = horizontal_forward(word, matrix, rows, cols);
     if (has_value(roi))
@@ -202,6 +202,50 @@ int has_value(ROI *roi)
         return true;
     }
     return false;
+}
+
+// Busca Horizontal (➡️) - RIGHT
+ROI *horizontal_forward(char *word, char **matrix, int *rows, int *cols)
+{
+
+    ROI *roi = create_roi();
+    int length_word = strlen(word);
+
+    for (int i = 0; i < *rows; i++)
+    {
+        for (int j = 0; j < *cols; j++)
+        {
+
+            if (word[0] == matrix[i][j])
+            {
+                // printf("Match na posicao [%d][%d]\n\n", i, j);
+                int count_equals = 0;
+                int k = 0;
+
+                for (k = 0; k < length_word; k++)
+                {
+
+                    if (j + k < *cols && word[k] == matrix[i][j + k])
+                    {
+                        // printf("Match na posicao [%d][%d] = %c \n\n", i, j + k, matrix[i][j + k]);
+                        if (++count_equals == length_word)
+                            break;
+                    }
+                }
+
+                if (count_equals == length_word)
+                {
+                    roi->A.x = i;
+                    roi->A.y = j;
+                    roi->B.x = i;
+                    roi->B.y = j + k;
+                    return roi;
+                }
+            }
+        }
+    }
+
+    return roi;
 }
 
 // 1  2  [3]
@@ -503,47 +547,6 @@ ROI *horizontal_backward(char *word, char **matrix, int *rows, int *cols)
                     roi->A.y = j;
                     roi->B.x = i;
                     roi->B.y = j - k;
-                    return roi;
-                }
-            }
-        }
-    }
-
-    return roi;
-}
-
-// Busca Horizontal (➡️) - RIGHT
-ROI *horizontal_forward(char *word, char **matrix, int *rows, int *cols)
-{
-
-    ROI *roi = create_roi();
-    int length_word = strlen(word);
-
-    for (int i = 0; i < *rows; i++)
-    {
-        for (int j = 0; j < *cols; j++)
-        {
-
-            if (word[0] == matrix[i][j])
-            {
-                int count_equals = 0;
-                int k = 0;
-
-                for (k = 0; k < length_word; k++)
-                {
-                    if (j + k < *cols && word[k] == matrix[i][j + k])
-                    {
-                        if (++count_equals == length_word)
-                            break;
-                    }
-                }
-
-                if (count_equals == length_word)
-                {
-                    roi->A.x = i;
-                    roi->A.y = j;
-                    roi->B.x = i;
-                    roi->B.y = j + k;
                     return roi;
                 }
             }
