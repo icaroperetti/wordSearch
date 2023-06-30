@@ -116,7 +116,7 @@ FILE *open_file(char *path)
 
     if (!file)
     {
-        printf("Erro ao abrir o arquivo.\n");
+        printf("Erro ao abrir o arquivo (verifique se está na pasta files).\n");
         exit(1);
     }
 
@@ -155,6 +155,8 @@ char **fill_matrix(FILE *file, int *rows, int *cols)
 
     // Detecta qual o tamanho da matriz que esta na primeira linha do arquivo
     fscanf(file, "%d %d", rows, cols);
+
+    printf("Tamanho da matriz: %d x %d\n", *rows, *cols);
 
     char **matrix = malloc_matrix(rows, cols);
 
