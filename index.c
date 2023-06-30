@@ -527,7 +527,6 @@ ROI *horizontal_forward(char *word, char **matrix, int *rows, int *cols)
             if (word[0] == matrix[i][j])
             {
                 int count_equals = 0;
-
                 int k = 0;
 
                 for (k = 0; k < length_word; k++)
