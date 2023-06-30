@@ -110,6 +110,70 @@ int main()
     return 0;
 }
 
+FILE *open_file(char *path)
+{
+    FILE *file = fopen(path, "r");
+
+    if (!file)
+    {
+        printf("Erro ao abrir o arquivo.\n");
+        exit(1);
+    }
+
+    return file;
+}
+
+char **malloc_matrix(int *rows, int *cols)
+{
+    char **matrix;
+
+    matrix = (char **)malloc(*rows * sizeof(char *));
+
+    if (matrix == NULL)
+    {
+        printf("Erro ao alocar memória.\n");
+        exit(1);
+    }
+
+    for (int i = 0; i < *rows; i++)
+    {
+        matrix[i] = (char *)malloc(*cols * sizeof(char));
+
+        if (matrix[i] == NULL)
+        {
+            printf("Erro ao alocar memória.\n");
+            exit(1);
+        }
+    }
+
+    return matrix;
+}
+
+// Função para preencher a matriz
+char **fill_matrix(FILE *file, int *rows, int *cols)
+{
+
+    // Detecta qual o tamanho da matriz que esta na primeira linha do arquivo
+    fscanf(file, "%d %d", rows, cols);
+
+    char **matrix = malloc_matrix(rows, cols);
+
+    // Preenche a matriz com os caracteres do arquivo
+    for (int i = 0; i < *rows; i++)
+    {
+        for (int j = 0; j < *cols * 2; j++)
+        {
+            if (j % 2 == 0)
+                fscanf(file, "%*c");
+            else
+                fscanf(file, "%c", &matrix[i][j / 2]);
+        }
+    }
+    fclose(file);
+
+    return matrix;
+}
+
 void create_path(char *path, char *file_name)
 {
     strcpy(path, FILE_PATH); // Copia o caminho para a variavel path
@@ -134,64 +198,6 @@ void lower_to_upper(char *word)
         word[i] = toupper(word[i]);
         i++;
     }
-}
-
-// Função que unifica as funções de busca
-ROI *search_word(char *word, char **matrix, int *rows, int *cols)
-{
-    ROI *roi = create_roi();
-
-    printf("\nBuscando a palavra: %s\n", word);
-
-    roi = horizontal_forward(word, matrix, rows, cols);
-    if (has_value(roi))
-    {
-        return roi;
-    }
-
-    roi = horizontal_backward(word, matrix, rows, cols);
-    if (has_value(roi))
-    {
-        return roi;
-    }
-
-    roi = vertical_forward(word, matrix, rows, cols);
-    if (has_value(roi))
-    {
-        return roi;
-    }
-
-    roi = vertical_backward(word, matrix, rows, cols);
-    if (has_value(roi))
-    {
-        return roi;
-    }
-
-    roi = main_diagonal_forward(word, matrix, rows, cols);
-    if (has_value(roi))
-    {
-        return roi;
-    }
-
-    roi = secondary_diagonal_forward(word, matrix, rows, cols);
-    if (has_value(roi))
-    {
-        return roi;
-    }
-
-    roi = secondary_diagonal_backward(word, matrix, rows, cols);
-    if (has_value(roi))
-    {
-        return roi;
-    }
-
-    roi = main_diagonal_backward(word, matrix, rows, cols);
-    if (has_value(roi))
-    {
-        return roi;
-    }
-
-    return roi;
 }
 
 // Verifica se a ROI tem algum valor
@@ -557,68 +563,62 @@ ROI *horizontal_backward(char *word, char **matrix, int *rows, int *cols)
     return roi;
 }
 
-FILE *open_file(char *path)
+// Função que unifica as funções de busca
+ROI *search_word(char *word, char **matrix, int *rows, int *cols)
 {
-    FILE *file = fopen(path, "r");
+    ROI *roi = create_roi();
 
-    if (!file)
+    printf("\nBuscando a palavra: %s\n", word);
+
+    roi = horizontal_forward(word, matrix, rows, cols);
+    if (has_value(roi))
     {
-        printf("Erro ao abrir o arquivo.\n");
-        exit(1);
+        return roi;
     }
 
-    return file;
-}
-
-char **malloc_matrix(int *rows, int *cols)
-{
-    char **matrix;
-
-    matrix = (char **)malloc(*rows * sizeof(char *));
-
-    if (matrix == NULL)
+    roi = horizontal_backward(word, matrix, rows, cols);
+    if (has_value(roi))
     {
-        printf("Erro ao alocar memória.\n");
-        exit(1);
+        return roi;
     }
 
-    for (int i = 0; i < *rows; i++)
+    roi = vertical_forward(word, matrix, rows, cols);
+    if (has_value(roi))
     {
-        matrix[i] = (char *)malloc(*cols * sizeof(char));
-
-        if (matrix[i] == NULL)
-        {
-            printf("Erro ao alocar memória.\n");
-            exit(1);
-        }
+        return roi;
     }
 
-    return matrix;
-}
-
-// Função para preencher a matriz
-char **fill_matrix(FILE *file, int *rows, int *cols)
-{
-
-    // Detecta qual o tamanho da matriz que esta na primeira linha do arquivo
-    fscanf(file, "%d %d", rows, cols);
-
-    char **matrix = malloc_matrix(rows, cols);
-
-    // Preenche a matriz com os caracteres do arquivo
-    for (int i = 0; i < *rows; i++)
+    roi = vertical_backward(word, matrix, rows, cols);
+    if (has_value(roi))
     {
-        for (int j = 0; j < *cols * 2; j++)
-        {
-            if (j % 2 == 0)
-                fscanf(file, "%*c");
-            else
-                fscanf(file, "%c", &matrix[i][j / 2]);
-        }
+        return roi;
     }
-    fclose(file);
 
-    return matrix;
+    roi = main_diagonal_forward(word, matrix, rows, cols);
+    if (has_value(roi))
+    {
+        return roi;
+    }
+
+    roi = secondary_diagonal_forward(word, matrix, rows, cols);
+    if (has_value(roi))
+    {
+        return roi;
+    }
+
+    roi = secondary_diagonal_backward(word, matrix, rows, cols);
+    if (has_value(roi))
+    {
+        return roi;
+    }
+
+    roi = main_diagonal_backward(word, matrix, rows, cols);
+    if (has_value(roi))
+    {
+        return roi;
+    }
+
+    return roi;
 }
 
 // Função para mostrar a matriz
