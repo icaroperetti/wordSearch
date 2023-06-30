@@ -208,8 +208,8 @@ int has_value(ROI *roi)
 ROI *horizontal_forward(char *word, char **matrix, int *rows, int *cols)
 {
 
-    ROI *roi = create_roi();
-    int length_word = strlen(word);
+    ROI *roi = create_roi();        // Cria a ROI (aloca memória e inicializa com -1)
+    int length_word = strlen(word); // Tamanho da palavra
 
     for (int i = 0; i < *rows; i++)
     {
@@ -255,8 +255,8 @@ ROI *horizontal_forward(char *word, char **matrix, int *rows, int *cols)
 // 3 -> 5 -> 7
 ROI *secondary_diagonal_forward(char *word, char **matrix, int *rows, int *cols)
 {
-    int length_word = strlen(word); // Pega o tamanho da palavra
-    ROI *roi = create_roi();        // Cria a ROI (aloca memória e inicializa com -1)
+    int length_word = strlen(word);
+    ROI *roi = create_roi();
 
     // Percorre a matriz
     for (int i = 0; i < *rows; i++)
@@ -323,6 +323,7 @@ ROI *secondary_diagonal_backward(char *word, char **matrix, int *rows, int *cols
                 {
                     if (i - k >= 0 && j + k < *cols && word[k] == matrix[i - k][j + k])
                     {
+                        // printf("Match na posicao [%d][%d] = %c \n\n", i - k, j + k, matrix[i - k][j + k]);
                         count_equals++;
                         if (count_equals == length_word)
                             break;
